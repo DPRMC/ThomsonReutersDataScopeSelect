@@ -2,7 +2,6 @@
 
 namespace DPRMC\ThomsonReutersDataScopeSelect\Tests;
 
-use DPRMC\ThomsonReutersDataScopeSelect\Responses\User;
 use DPRMC\ThomsonReutersDataScopeSelect\TRDSSClient;
 
 class ClientTest extends AbstractBase {
