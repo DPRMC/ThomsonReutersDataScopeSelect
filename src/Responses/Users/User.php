@@ -1,6 +1,6 @@
 <?php
 
-namespace DPRMC\ThomsonReutersDataScopeSelect\Responses;
+namespace DPRMC\ThomsonReutersDataScopeSelect\Responses\Users;
 
 
 class User {

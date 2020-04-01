@@ -5,8 +5,8 @@ namespace DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Users;
 
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticate;
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
-use DPRMC\ThomsonReutersDataScopeSelect\Responses\User;
-use Illuminate\Support\Collection;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\User;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\UserClaim;
 
 trait Users {
 
@@ -27,6 +27,24 @@ trait Users {
         endforeach;
 
         return $users;
+    }
+
+
+    /**
+     * @see https://hosted.datascopeapi.reuters.com/RestApi.Help/Context/Entity?ctx=Users&ent=UserClaim
+     * @return array
+     */
+    public function UserClaim(): array {
+        $userClaims           = [];
+        $relativeUrl          = 'Users/UserClaims';
+        $response             = $this->getRequest( $relativeUrl );
+        $body                 = json_decode( $response->getBody()->getContents(), TRUE );
+        $arrayOfUserClaimData = $body[ 'value' ];
+        foreach ( $arrayOfUserClaimData as $userClaim ):
+            $userClaims[] = new UserClaim( $userClaim );
+        endforeach;
+
+        return $userClaims;
     }
 
 
