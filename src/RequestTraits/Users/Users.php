@@ -7,6 +7,7 @@ use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticat
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\User;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\UserClaim;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\UserPreference;
 
 trait Users {
 
@@ -45,6 +46,13 @@ trait Users {
         endforeach;
 
         return $userClaims;
+    }
+
+    public function UserPreferences( int $UserId ): UserPreference {
+        $relativeUrl = 'Users/Users(' . $UserId . ')/Preferences';
+        $response    = $this->getRequest( $relativeUrl );
+        $body        = json_decode( $response->getBody()->getContents(), TRUE );
+        return new UserPreference( $body );
     }
 
 
