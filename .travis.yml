@@ -1,0 +1,7 @@
+language: php
+php:
+  - '7.2'
+install: composer install
+after_success:
+  # or enable logging
+  - bash <(curl -s https://codecov.io/bash)
