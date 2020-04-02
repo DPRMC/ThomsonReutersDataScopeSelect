@@ -2,11 +2,13 @@
 
 namespace DPRMC\ThomsonReutersDataScopeSelect;
 
+
 class TRDSSClient {
 
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticate;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Users\Users;
+    use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Usage\Usage;
 
     protected $userName;
     protected $password;
