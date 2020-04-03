@@ -50,6 +50,11 @@ trait Client {
         return $this->guzzle->request( 'GET', $relativeUrl, $options );
     }
 
+    protected function deleteRequest( string $relativeUrl, array $options = [] ) {
+        $options = $this->mergeOptionsWithDefaults( $options );
+        return $this->guzzle->request( 'DELETE', $relativeUrl, $options );
+    }
+
     protected function getDefaultOptions(): array {
         return [
             'headers' => [

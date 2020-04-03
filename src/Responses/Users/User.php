@@ -10,16 +10,12 @@ class User {
     public $Email;
     public $Phone;
 
-    /**
-     * User constructor.
-     * @param array $response
-     */
-    public function __construct( array $response ) {
-        $this->UserId   = $response[ 'UserId' ];
-        $this->UserName = $response[ 'UserName' ];
-        $this->Email    = $response[ 'Email' ];
-        $this->Phone    = $response[ 'Phone' ];
 
+    public function __construct( string $UserId, string $UserName, string $Email, string $Phone ) {
+        $this->UserId   = $UserId;
+        $this->UserName = $UserName;
+        $this->Email    = $Email;
+        $this->Phone    = $Phone;
     }
 
 

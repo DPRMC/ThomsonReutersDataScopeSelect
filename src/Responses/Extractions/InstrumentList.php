@@ -37,16 +37,12 @@ class InstrumentList {
     public $Modified;
 
 
-    /**
-     * User constructor.
-     * @param array $response
-     */
-    public function __construct( array $response ) {
-        $this->ListId       = $response[ 'ListId' ];
-        $this->Name         = $response[ 'Name' ];
-        $this->Count        = $response[ 'Count' ];
-        $this->Created      = Carbon::parse( $response[ 'Created' ] );
-        $this->Modified     = Carbon::parse( $response[ 'Modified' ] );
+    public function __construct( string $ListId, string $Name, int $Count, string $Created, string $Modified ) {
+        $this->ListId   = $ListId;
+        $this->Name     = $Name;
+        $this->Count    = $Count;
+        $this->Created  = Carbon::parse( $Created );
+        $this->Modified = Carbon::parse( $Modified );
     }
 
 

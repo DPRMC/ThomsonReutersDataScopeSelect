@@ -2,7 +2,6 @@
 
 namespace DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Users;
 
-
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticate;
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\User;
@@ -23,8 +22,11 @@ trait Users {
         $response        = $this->getRequest( $relativeUrl );
         $body            = json_decode( $response->getBody()->getContents(), TRUE );
         $arrayOfUserData = $body[ 'value' ];
-        foreach ( $arrayOfUserData as $user ):
-            $users[] = new User( $user );
+        foreach ( $arrayOfUserData as $userData ):
+            $users[] = new User( $userData[ 'UserId' ],
+                                 $userData[ 'UserName' ],
+                                 $userData[ 'Email' ],
+                                 $userData[ 'Phone' ] );
         endforeach;
 
         return $users;

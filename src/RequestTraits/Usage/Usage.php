@@ -3,8 +3,10 @@
 namespace DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Usage;
 
 
+use Carbon\Carbon;
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticate;
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Usage\ExtractionUsageInstrumentSummaryResult;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\User;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\UserClaim;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Users\UserPreference;
@@ -16,29 +18,39 @@ trait Usage {
     use Authenticate;
 
     /**
-     * TODO This method does not work yet. I need info on the parameters it expects.
      * @see https://hosted.datascopeapi.reuters.com/RestApi.Help/Context/Operation?ctx=Usage&opn=GetExtractionUsageInstrumentSummary
+     * @param Carbon $startDateTime
+     * @param Carbon $endDateTime
+     * @param bool $debug
+     * @return array
      */
-    public function GetExtractionUsageInstrumentSummary(): array {
+    public function GetExtractionUsageInstrumentSummary( Carbon $startDateTime, Carbon $endDateTime, bool $debug = FALSE ): array {
         $relativeUrl = 'Usage/GetExtractionUsageInstrumentSummary';
 
         $options = [
-            'form_params' => [
-                'ExtractionUsageCriteria' => 'ExtractionUsageInstrumentSummaryCriteria',
-                'EndDateTime'             => '04 01, 2020 12:00:00 AM',
-                'StartDateTime'           => '03 01, 2020 12:00:00 AM',
+            'json'  => [
+                'ExtractionUsageCriteria' => [
+                    'EndDateTime'   => $endDateTime->toIso8601ZuluString( 'millisecond' ),
+                    'StartDateTime' => $startDateTime->toIso8601ZuluString( 'millisecond' ), ],
             ],
+            'debug' => $debug,
         ];
-        try {
 
+        $response = $this->postRequest( $relativeUrl, $options );
+        $result   = json_decode( $response->getBody()->getContents(), TRUE );
 
-            $response = $this->postRequest( $relativeUrl, $options );
-            $body     = json_decode( $response->getBody()->getContents(), TRUE );
-            print_r( $body );
-        } catch ( ClientException $exception ) {
-            var_dump( $exception->getResponse()->getBody()->getContents() );
-        }
+        $records = [];
 
+        foreach ( $result[ 'Records' ] as $data ):
+            $records[] = new ExtractionUsageInstrumentSummaryResult( $data[ 'AssetClass' ],
+                                                                     $data[ 'SubClass' ],
+                                                                     $data[ 'ReportTemplate' ],
+                                                                     $data[ 'SubTemplate' ],
+                                                                     $data[ 'Count' ],
+                                                                     $data[ 'FixedIncomeValuations' ],);
+        endforeach;
+
+        return $records;
     }
 
 

@@ -2,8 +2,8 @@
 
 namespace DPRMC\ThomsonReutersDataScopeSelect\Tests;
 
-
-use DPRMC\ThomsonReutersDataScopeSelect\TRDSSClient;
+use Carbon\Carbon;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Usage\ExtractionUsageInstrumentSummaryResult;
 
 class UsageTest extends AbstractBase {
 
@@ -12,12 +12,16 @@ class UsageTest extends AbstractBase {
      * @group Usage
      */
     public function testUsageGetExtractionUsageInstrumentSummaryShouldReturnData() {
-        $client = TRDSSClient::instantiate( $this->userName, $this->password, self::DEBUG );
-        $client->GetExtractionUsageInstrumentSummary();
+        $startDateTime = Carbon::create( 2020, 1, 1, 0, 0, 0 );
+        $endDateTime   = Carbon::create( 2020, 4, 1, 0, 0, 0 );
+
+        $records = $this->client->GetExtractionUsageInstrumentSummary( $startDateTime, $endDateTime );
+
+        $this->assertIsArray( $records );
+        $firstRecord = reset( $records );
+        $this->assertInstanceOf( ExtractionUsageInstrumentSummaryResult::class, $firstRecord );
 
     }
-
-
 
 
 }
