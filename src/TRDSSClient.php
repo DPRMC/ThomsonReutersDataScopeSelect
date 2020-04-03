@@ -9,6 +9,9 @@ class TRDSSClient {
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticate;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Users\Users;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Usage\Usage;
+    use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\Extractions;
+    use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\InstrumentList\InstrumentList\InstrumentList;
+
 
     protected $userName;
     protected $password;

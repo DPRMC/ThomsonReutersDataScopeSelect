@@ -13,7 +13,8 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.5"
+        "guzzlehttp/guzzle": "^6.5",
+        "nesbot/carbon": "^2.32"
     },
     "autoload": {
         "psr-4": {
