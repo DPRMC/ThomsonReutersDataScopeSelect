@@ -5,6 +5,7 @@ namespace DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\Instrume
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticate;
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\Instrument;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\InstrumentListItem;
 use GuzzleHttp\Exception\ClientException;
 
 trait InstrumentList {
@@ -279,13 +280,10 @@ trait InstrumentList {
         $relativeUrl = "Extractions/InstrumentLists('" . $instrumentListIdToBeCopied . "')/ThomsonReuters.Dss.Api.Extractions.InstrumentListCopy";
 
         $options = [
-            'headers' => [
-                'Content-Type' => 'application/json; odata=minimalmetadata',
-            ],
-            'json'    => [
+            'json'  => [
                 'NameOfCopy' => $nameOfCopy,
             ],
-            'debug'   => $debug,
+            'debug' => $debug,
         ];
 
         $response = $this->postRequest( $relativeUrl, $options );
@@ -303,23 +301,60 @@ trait InstrumentList {
                                                                                               $modified );
     }
 
+
     /**
      * @param string $instrumentListId
-     * @param array $identifiers
+     * @return array An array of InstrumentListItem
+     */
+    public function GetAllInstruments( string $instrumentListId ): array {
+        $relativeUrl         = "Extractions/InstrumentLists('" . $instrumentListId . "')/ThomsonReuters.Dss.Api.Extractions.InstrumentListGetAllInstruments";
+        $response            = $this->getRequest( $relativeUrl );
+        $result              = json_decode( $response->getBody()->getContents(), TRUE );
+        $instrumentListItems = [];
+        foreach ( $result[ 'value' ] as $instrumentListItemData ):
+            $instrumentListItems[] = new InstrumentListItem( $instrumentListItemData[ 'IdentifierType' ],
+                                                             $instrumentListItemData[ 'Identifier' ],
+                                                             $instrumentListItemData[ 'Description' ],
+                                                             $instrumentListItemData[ 'Source' ],
+                                                             $instrumentListItemData[ 'ListId' ],
+                                                             $instrumentListItemData[ 'UserDefinedIdentifier' ],
+                                                             $instrumentListItemData[ 'UserDefinedIdentifier2' ],
+                                                             $instrumentListItemData[ 'UserDefinedIdentifier3' ],
+                                                             $instrumentListItemData[ 'UserDefinedIdentifier4' ],
+                                                             $instrumentListItemData[ 'UserDefinedIdentifier5' ],
+                                                             $instrumentListItemData[ 'UserDefinedIdentifier6' ],
+                                                             $instrumentListItemData[ 'Order' ],
+                                                             $instrumentListItemData[ 'InstrumentListItemKey' ],
+                                                             $instrumentListItemData[ 'InstrumentKey' ] );
+        endforeach;
+        return $instrumentListItems;
+    }
+
+
+    /**
+     * @param string $instrumentListId
+     * @param array $identifiers An array of Identifier objects.
+     * @param bool $keepDuplicates Set to true to keep duplicate identifiers in your list.
+     * @param bool $debug Set to true to kick off debug mode for the Guzzle client.
      * @return array
      * @see https://hosted.datascopeapi.reuters.com/RestApi.Help/Context/Operation?ctx=Extractions&ent=InstrumentList&opn=AppendIdentifiers
      */
-    public function AppendIdentifiers( string $instrumentListId, array $identifiers ) {
+    public function AppendIdentifiers( string $instrumentListId, array $identifiers, bool $keepDuplicates = FALSE, bool $debug = FALSE ) {
         $relativeUrl = 'Extractions/InstrumentLists(' . $instrumentListId . ')/ThomsonReuters.Dss.Api.Extractions.InstrumentListAppendIdentifiers';
 
+        $identifierParameters = [];
+
+        /**
+         * @var InstrumentListItem $identifier
+         */
+        foreach ( $identifiers as $identifier ):
+            $identifierParameters[] = $identifier->toArray();
+        endforeach;
+
         $options = [
-            'headers' => [
-                'Content-Type' => 'application/json; odata=minimalmetadata',
-            ],
-            'json'    => [
-                'ListName' => 'CommoditiesCriteriaList',
-                'Type'     => 'Commodities',
-                'Filters'  => $filters,
+            'json' => [
+                'Identifiers'    => $identifierParameters,
+                'KeepDuplicates' => $keepDuplicates,
             ],
         ];
 

@@ -32,7 +32,10 @@ class Instrument {
      * @param string $Description
      * @param string $Exchange
      */
-    public function __construct( $IdentifierType = '', $Identifier = '', $Description = '', $Exchange = '' ) {
+    public function __construct( $IdentifierType = '',
+                                 $Identifier = '',
+                                 $Description = '',
+                                 $Exchange = '' ) {
         $this->IdentifierType = $IdentifierType;
         $this->Identifier     = $Identifier;
         $this->Description    = $Description;

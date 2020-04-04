@@ -36,4 +36,16 @@ class Identifier {
         $this->IdentifierType        = $IdentifierType;
         $this->UserDefinedIdentifier = $UserDefinedIdentifier;
     }
+
+
+    /**
+     * @return array
+     */
+    public function toArray(): array {
+        return [
+            'Identifier'            => $this->Identifier,
+            'IdentifierType'        => $this->IdentifierType,
+            'UserDefinedIdentifier' => $this->UserDefinedIdentifier,
+        ];
+    }
 }

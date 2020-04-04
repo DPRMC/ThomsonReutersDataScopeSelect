@@ -8,6 +8,8 @@ use DPRMC\ThomsonReutersDataScopeSelect\Tests\AbstractBase;
 class ReportTemplateTest extends AbstractBase {
 
 
+
+
     /**
      * @test
      * @group ReportTemplate
