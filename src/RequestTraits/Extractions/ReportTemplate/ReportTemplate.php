@@ -46,4 +46,36 @@ trait ReportTemplate {
     }
 
 
+    /**
+     * @TODO FIND A LIST OF VALID VALUES FOR $ReportTemplateCode
+     * @param string $ReportTemplateCode
+     * @param bool $debug
+     * @return array
+     */
+    public function GetValidContentFieldTypesForTemplateCode(string $ReportTemplateCode, bool $debug = false){
+        $relativeUrl = "Extractions/GetValidContentFieldTypesForTemplateCode(ReportTemplateCode='" . $ReportTemplateCode . "')";
+
+        $options = [
+            'debug' => $debug,
+        ];
+
+        $response = $this->getRequest( $relativeUrl, $options );
+        $result   = json_decode( $response->getBody()->getContents(), TRUE );
+
+        $unparsedRecords = $result[ 'value' ];
+
+        $contentFieldTypes = [];
+
+        foreach ( $unparsedRecords as $unparsedRecord ):
+            $contentFieldTypes[] = new ContentFieldType( $unparsedRecord[ 'Code' ],
+                                                         $unparsedRecord[ 'Name' ],
+                                                         $unparsedRecord[ 'Description' ],
+                                                         $unparsedRecord[ 'FormatType' ],
+                                                         $unparsedRecord[ 'FieldGroup' ] );
+
+        endforeach;
+
+        return $contentFieldTypes;
+    }
+
 }
