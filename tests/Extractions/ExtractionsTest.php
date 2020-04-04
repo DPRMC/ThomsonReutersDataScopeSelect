@@ -1,9 +1,11 @@
 <?php
 
-namespace DPRMC\ThomsonReutersDataScopeSelect\Tests;
+namespace DPRMC\ThomsonReutersDataScopeSelect\Tests\Extractions;
 
+use DPRMC\ThomsonReutersDataScopeSelect\Tests\AbstractBase;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\Instrument;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\InstrumentList;
+
 
 class ExtractionsTest extends AbstractBase {
 
