@@ -13,12 +13,15 @@ class ExtractionsTest extends AbstractBase {
      * @group InstrumentList111
      */
     public function testCreateInstrumentListShouldReturnAnInstrumentListObject() {
-        $instrumentListName = 'TEST_MY_INSTRUMENT_LIST';
-        $instrumentList     = $this->client->CreateInstrumentList( $instrumentListName );
+        $instrumentListName    = 'TEST_MY_INSTRUMENT_LIST';
+        $newInstrumentListName = 'TEST_MY_INSTRUMENT_LIST_WITH_NEW_NAME';
+        $instrumentList        = $this->client->CreateInstrumentList( $instrumentListName );
         $this->assertInstanceOf( InstrumentList::class, $instrumentList );
 
+        $updated = $this->client->Update($instrumentList->ListId,$newInstrumentListName);
+        $this->assertTrue($updated);
 
-        $foundInstrumentList = $this->client->GetInstrumentListByName( $instrumentListName );
+        $foundInstrumentList = $this->client->GetInstrumentListByName( $newInstrumentListName );
         $this->assertInstanceOf( InstrumentList::class, $foundInstrumentList );
 
         $deleted = $this->client->DeleteInstrumentList( $foundInstrumentList->ListId );

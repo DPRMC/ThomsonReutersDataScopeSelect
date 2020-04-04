@@ -30,7 +30,7 @@ trait InstrumentList {
         $relativeUrl = 'Extractions/InstrumentLists';
 
         $options = [
-            'json'    => [
+            'json' => [
                 '@odata.type' => '#ThomsonReuters.Dss.Api.Extractions.SubjectLists.InstrumentList',
                 'Name'        => $name,
             ],
@@ -48,6 +48,32 @@ trait InstrumentList {
                                                                                               $count,
                                                                                               $created,
                                                                                               $modified );
+    }
+
+
+    /**
+     * @param string $instrumentListId
+     * @param string $newName Friendly name that can be used for retrieving the list by name.
+     * @param bool $debug
+     * @return bool
+     * @throws \Exception
+     */
+    public function Update( string $instrumentListId, string $newName, bool $debug = FALSE ) {
+        $relativeUrl = "Extractions/InstrumentLists('" . $instrumentListId . "')";
+        $options     = [
+            'json'  => [
+                '@odata.type' => '#ThomsonReuters.Dss.Api.Extractions.SubjectLists.InstrumentList',
+                "ListId"      => $instrumentListId,
+                "Name"        => $newName,
+            ],
+            'debug' => $debug,
+        ];
+        $response    = $this->putRequest( $relativeUrl, $options );
+        $statusCode  = $response->getStatusCode();
+        if ( 204 == $statusCode ):
+            return TRUE;
+        endif;
+        throw new \Exception( "Unable to delete instrument list with id: " . $instrumentListId );
     }
 
 
@@ -230,6 +256,7 @@ trait InstrumentList {
 
     /**
      * Given an Instrument List id, this method will return the max number of Instruments you can add to this List.
+     * @see https://hosted.datascopeapi.reuters.com/RestApi.Help/Context/Operation?ctx=Extractions&ent=InstrumentList&opn=GetMaxInstrumentsAllowed
      * @param string $instrumentListId
      * @return int
      */
@@ -241,6 +268,13 @@ trait InstrumentList {
     }
 
 
+    /**
+     * https://hosted.datascopeapi.reuters.com/RestApi.Help/Context/Operation?ctx=Extractions&ent=InstrumentList&opn=Copy
+     * @param string $instrumentListIdToBeCopied
+     * @param string $nameOfCopy
+     * @param bool $debug
+     * @return \DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\InstrumentList
+     */
     public function Copy( string $instrumentListIdToBeCopied, string $nameOfCopy, bool $debug = FALSE ): \DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\InstrumentList {
         $relativeUrl = "Extractions/InstrumentLists('" . $instrumentListIdToBeCopied . "')/ThomsonReuters.Dss.Api.Extractions.InstrumentListCopy";
 
