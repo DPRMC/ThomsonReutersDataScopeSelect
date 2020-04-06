@@ -2,6 +2,7 @@
 
 namespace DPRMC\ThomsonReutersDataScopeSelect\Tests\Extractions;
 
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\Schedule\InstrumentAppendIdentifiers\InstrumentsAppendIdentifiersResult;
 use DPRMC\ThomsonReutersDataScopeSelect\Tests\AbstractBase;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\InstrumentListItem;
 
@@ -16,10 +17,9 @@ class ScheduleTest extends AbstractBase {
     public function testRunImmediateSchedule() {
         $instrumentListName = 'DELETE_ME_FULL_STS';
         $instrumentList     = $this->client->GetInstrumentListByName( $instrumentListName );
-        print_r( $instrumentList );
+
 
         $instrumentListItems = $this->client->GetAllInstruments( $instrumentList->ListId );
-        print_r( $instrumentListItems );
 
 
         $newInstrumentListItems   = [];
@@ -28,13 +28,12 @@ class ScheduleTest extends AbstractBase {
                                                             '',
                                                             'EJV' );
 
-        $result = $this->client->AppendIdentifiers( $instrumentList->ListId,
-                                                    $newInstrumentListItems,
-                                                    TRUE,
-                                                    TRUE );
+        $InstrumentsAppendIdentifiersResult = $this->client->AppendIdentifiers( $instrumentList->ListId,
+                                                  $newInstrumentListItems,
+                                                  false,
+                                                  false );
 
-        print_r($result);
-
+        print_r($InstrumentsAppendIdentifiersResult);
 
     }
 

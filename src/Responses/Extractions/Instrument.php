@@ -42,5 +42,12 @@ class Instrument {
         $this->Exchange       = $Exchange;
     }
 
+    public function toArrayForExtract() {
+        return [
+            'Identifier'     => $this->Identifier,
+            'IdentifierType' => $this->IdentifierType,
+        ];
+    }
+
 
 }

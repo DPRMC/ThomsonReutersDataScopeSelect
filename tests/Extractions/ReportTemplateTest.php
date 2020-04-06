@@ -8,8 +8,6 @@ use DPRMC\ThomsonReutersDataScopeSelect\Tests\AbstractBase;
 class ReportTemplateTest extends AbstractBase {
 
 
-
-
     /**
      * @test
      * @group ReportTemplate
@@ -38,5 +36,17 @@ class ReportTemplateTest extends AbstractBase {
         $this->assertInstanceOf( ContentFieldType::class, $firstContentFieldType );
     }
 
+
+    /**
+     * @test
+     * @group eod
+     */
+    public function testGetValidContentFieldTypesForTemplateCodeEODShouldReturnAnArrayOfContentFieldTypes() {
+        $reportTemplateType = 'EOD';
+        $contentFieldTypes  = $this->client->GetValidContentFieldTypesForTemplateCode( $reportTemplateType );
+        $this->assertIsArray( $contentFieldTypes );
+        $firstContentFieldType = reset( $contentFieldTypes );
+        $this->assertInstanceOf( ContentFieldType::class, $firstContentFieldType );
+    }
 
 }

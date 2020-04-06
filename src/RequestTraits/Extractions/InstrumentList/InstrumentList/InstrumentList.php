@@ -6,6 +6,7 @@ use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Authentication\Authenticat
 use DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\Instrument;
 use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\InstrumentListItem;
+use DPRMC\ThomsonReutersDataScopeSelect\Responses\Extractions\Schedule\InstrumentAppendIdentifiers\InstrumentsAppendIdentifiersResult;
 use GuzzleHttp\Exception\ClientException;
 
 trait InstrumentList {
@@ -336,11 +337,14 @@ trait InstrumentList {
      * @param array $identifiers An array of Identifier objects.
      * @param bool $keepDuplicates Set to true to keep duplicate identifiers in your list.
      * @param bool $debug Set to true to kick off debug mode for the Guzzle client.
-     * @return array
+     * @return InstrumentsAppendIdentifiersResult
      * @see https://hosted.datascopeapi.reuters.com/RestApi.Help/Context/Operation?ctx=Extractions&ent=InstrumentList&opn=AppendIdentifiers
      */
-    public function AppendIdentifiers( string $instrumentListId, array $identifiers, bool $keepDuplicates = FALSE, bool $debug = FALSE ) {
-        $relativeUrl = 'Extractions/InstrumentLists(' . $instrumentListId . ')/ThomsonReuters.Dss.Api.Extractions.InstrumentListAppendIdentifiers';
+    public function AppendIdentifiers( string $instrumentListId,
+                                       array $identifiers,
+                                       bool $keepDuplicates = FALSE,
+                                       bool $debug = FALSE ): InstrumentsAppendIdentifiersResult {
+        $relativeUrl = "Extractions/InstrumentLists('" . $instrumentListId . "')/ThomsonReuters.Dss.Api.Extractions.InstrumentListAppendIdentifiers";
 
         $identifierParameters = [];
 
@@ -352,17 +356,17 @@ trait InstrumentList {
         endforeach;
 
         $options = [
-            'json' => [
+            'json'  => [
                 'Identifiers'    => $identifierParameters,
                 'KeepDuplicates' => $keepDuplicates,
             ],
+            'debug' => $debug,
         ];
 
         $response = $this->postRequest( $relativeUrl, $options );
-        $body     = json_decode( $response->getBody()->getContents(), TRUE );
+        $data     = json_decode( $response->getBody()->getContents(), TRUE );
 
-        var_dump( $body );
-        return [];
+        return InstrumentsAppendIdentifiersResult::createFromData($data);
     }
 
 

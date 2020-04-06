@@ -2,7 +2,6 @@
 
 namespace DPRMC\ThomsonReutersDataScopeSelect;
 
-
 class TRDSSClient {
 
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Client;
@@ -10,6 +9,7 @@ class TRDSSClient {
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Users\Users;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Usage\Usage;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\Extractions;
+    use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\ExtractWithNotesResult\ExtractWithNotesResult;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\ReportTemplate\ReportTemplate;
     use \DPRMC\ThomsonReutersDataScopeSelect\RequestTraits\Extractions\InstrumentList\InstrumentList\InstrumentList;
 
